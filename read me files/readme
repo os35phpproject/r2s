@@ -1,0 +1,3 @@
+you have to run the web socket server inside /bin  by sudo php chat-server.php
+http://localhost/prologin.php  -----> to log into the service
+the admin user is the user with id=1 in users table

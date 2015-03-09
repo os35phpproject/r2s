@@ -1,0 +1,124 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+
+CREATE SCHEMA IF NOT EXISTS `phpproject` DEFAULT CHARACTER SET latin1 ;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`employee`
+-- -----------------------------------------------------
+USE `phpproject` ;
+
+-- -----------------------------------------------------
+-- Table `phpproject`.`category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phpproject`.`category` (
+  `ctid` INT(11) NOT NULL AUTO_INCREMENT,
+  `ctname` VARCHAR(50) NULL DEFAULT NULL,
+  PRIMARY KEY (`ctid`),
+  UNIQUE INDEX `ctname` (`ctname` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `phpproject`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phpproject`.`users` (
+  `usid` INT(11) NOT NULL AUTO_INCREMENT,
+  `usquestion` TEXT NOT NULL,
+  `usname` VARCHAR(70) NULL DEFAULT NULL,
+  `usemail` VARCHAR(40) NULL DEFAULT NULL,
+  `uspassword` VARCHAR(50) NULL DEFAULT NULL,
+  `usroomno` INT(11) NULL DEFAULT NULL,
+  `usext` INT(11) NULL DEFAULT NULL,
+  `usimage` VARCHAR(50) NULL DEFAULT NULL,
+  `usanswer` VARCHAR(32) NOT NULL,
+  PRIMARY KEY (`usid`),
+  UNIQUE INDEX `usname` (`usname` ASC),
+  UNIQUE INDEX `usemail` (`usemail` ASC),
+  UNIQUE INDEX `usext` (`usext` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `phpproject`.`product`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phpproject`.`product` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `prname` VARCHAR(50) NULL DEFAULT NULL,
+  `prprice` INT(11) NULL DEFAULT NULL,
+  `prcategory` INT(11) NULL DEFAULT NULL,
+  `primage` VARCHAR(50) NULL DEFAULT NULL,
+  `statues` INT(11) NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `prname` (`prname` ASC),
+  INDEX `fk_product_1_idx` (`prcategory` ASC),
+  CONSTRAINT `fk_product_1`
+    FOREIGN KEY (`prcategory`)
+    REFERENCES `phpproject`.`category` (`ctid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `phpproject`.`room`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phpproject`.`room` (
+  `rmid` INT(11) NOT NULL AUTO_INCREMENT,
+  `rmno` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`rmid`),
+  UNIQUE INDEX `rmno` (`rmno` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `phpproject`.`orders`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phpproject`.`orders` (
+  `orid` INT(11) NOT NULL AUTO_INCREMENT,
+  `orusid` INT(11) NULL DEFAULT NULL,
+  `orprid` INT(11) NULL DEFAULT NULL,
+  `ordate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `orroom` INT(11) NULL DEFAULT NULL,
+  `ornumber` INT(11) NULL DEFAULT NULL,
+  `orcost` INT(11) NULL DEFAULT NULL,
+  `ornote` TEXT NULL DEFAULT NULL,
+  `status` VARCHAR(32) NULL DEFAULT 'processing',
+  PRIMARY KEY (`orid`),
+  INDEX `fk_orders_1_idx` (`orusid` ASC),
+  INDEX `fk_orders_2_idx` (`orprid` ASC),
+  INDEX `fk_orders_3_idx` (`orroom` ASC),
+  CONSTRAINT `fk_orders_1`
+    FOREIGN KEY (`orusid`)
+    REFERENCES `phpproject`.`users` (`usid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_2`
+    FOREIGN KEY (`orprid`)
+    REFERENCES `phpproject`.`product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_3`
+    FOREIGN KEY (`orroom`)
+    REFERENCES `phpproject`.`room` (`rmid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 98
+DEFAULT CHARACTER SET = latin1;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

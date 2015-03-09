@@ -1,0 +1,10 @@
+ select x.*,y.ornumber,y.orcost,y.orprid from orders as x,orders as y where x.status != "Done" and x.ordate=y.ordate and x.orusid=y.orusid;
+
+
+
+select x.*,y.ornumber,y.orcost,y.orprid from orders as x left join orders as y on x.ordate=y.ordate and x.orusid=y.orusid where x.status != "Done";
+
+
+
+
+select x.*,y.ornumber,y.orcost,y.orprid from orders as x left join orders as y on x.ordate=y.ordate and x.orusid=y.orusid where x.status != "Done" and x.orprid!=y.orprid group by ordate;
