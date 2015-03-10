@@ -8,13 +8,11 @@
                 border-style: solid;
                 border-width: 1px;
             }
-            td{
-                width: 150px;
-                padding-left: 15px;
-            }
+
             img{
-                width: 200px;
-                height: 100px;
+                width: 80px;
+                height: 80px;
+                margin-left: 35px;
             }
             h1{
                 margin-left: 70px;
@@ -42,6 +40,7 @@
                 border-width: 1px;
             
             }
+
             #add{
                 float: right;
                 font-size: 20px;
@@ -121,15 +120,19 @@ echo "</div>";
          $num_results = mysqli_num_rows($result);
         for ($i=0; $i <$num_results; $i++) {
             $row = mysqli_fetch_assoc($result);
+             if($row["usid"] != 1){
+    
         ?>
             <tr>
                 <td><?php echo $row["usname"]; ?></td> 
                 <td><?php echo $row["usroomno"]; ?></td>
                 <td><img src="./<?php echo $row["usimage"]; ?>"></td> 
                 <td><?php echo $row["usext"]; ?></td>
-                <td><a href="editUser.php?id=<?php echo $row["usid"];?>">Edit</a> &nbsp &nbsp <a href="deleteUser.php?id=<?php echo $row["usid"];?>">Delete</a></td> 
+                <td><button type="button"  class="btn btn-info" onclick="location.href='editUser.php?id=<?php echo $row["usid"];?>'">Edit</button>
+                <button type="button"  class="btn btn-danger" onclick="location.href='deleteUser.php?id=<?php echo $row["usid"];?>'">Delete</button></td>
             </tr>
         <?php
+            }
         }
         ?>
     </table>
